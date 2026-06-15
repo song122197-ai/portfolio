@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>기양 — Product Planner</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --white: #ffffff;
+      --bg: #f8f9fa;
+      --gray-50: #f6f6f8;
+      --gray-100: #ebebf0;
+      --gray-300: #c5c5cc;
+      --gray-500: #8c8c9a;
+      --gray-700: #4d4d5c;
+      --black: #111111;
+      --blue: #3182f6;
+      --blue-light: #ebf3ff;
+      --radius: 16px;
+      --radius-sm: 10px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--white);
+      color: var(--black);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--gray-100);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 32px;
+      height: 56px;
+    }
+
+    .nav-logo {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--black);
+      letter-spacing: -0.3px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--gray-700);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+
+    .nav-links a:hover { color: var(--black); }
+
+    /* SECTIONS */
+    section { padding: 100px 0; }
+
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* HERO */
+    #hero {
+      padding: 160px 0 100px;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--blue-light);
+      color: var(--blue);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 5px 12px;
+      border-radius: 100px;
+      margin-bottom: 28px;
+      letter-spacing: -0.1px;
+    }
+
+    .hero-eyebrow::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--blue);
+    }
+
+    h1 {
+      font-size: clamp(32px, 6vw, 52px);
+      font-weight: 700;
+      line-height: 1.18;
+      letter-spacing: -1.5px;
+      color: var(--black);
+      margin-bottom: 24px;
+      word-break: keep-all;
+    }
+
+    h1 em {
+      font-style: normal;
+      color: var(--blue);
+    }
+
+    .hero-desc {
+      font-size: 17px;
+      font-weight: 400;
+      color: var(--gray-700);
+      line-height: 1.75;
+      max-width: 520px;
+      word-break: keep-all;
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 40px;
+      margin-top: 52px;
+      padding-top: 40px;
+      border-top: 1px solid var(--gray-100);
+    }
+
+    .stat-item {}
+
+    .stat-number {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--black);
+      letter-spacing: -1px;
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 13px;
+      color: var(--gray-500);
+      margin-top: 4px;
+      font-weight: 400;
+    }
+
+    /* DIVIDER */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--gray-100);
+    }
+
+    /* SECTION HEADING */
+    .section-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--gray-500);
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      margin-bottom: 36px;
+    }
+
+    /* PHILOSOPHY */
+    #philosophy {}
+
+    .philosophy-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 0;
+    }
+
+    .philo-card {
+      background: var(--gray-50);
+      border-radius: var(--radius);
+      padding: 28px 24px;
+    }
+
+    .philo-card.wide {
+      grid-column: span 2;
+      background: var(--black);
+      color: var(--white);
+    }
+
+    .philo-icon {
+      font-size: 22px;
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    .philo-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--black);
+      margin-bottom: 8px;
+      letter-spacing: -0.3px;
+    }
+
+    .philo-card.wide .philo-title {
+      color: var(--white);
+      font-size: 18px;
+    }
+
+    .philo-body {
+      font-size: 14px;
+      color: var(--gray-700);
+      line-height: 1.7;
+      word-break: keep-all;
+    }
+
+    .philo-card.wide .philo-body {
+      color: rgba(255,255,255,0.6);
+    }
+
+    .philo-tag {
+      display: inline-block;
+      background: var(--blue);
+      color: white;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 100px;
+      margin-top: 14px;
+    }
+
+    /* TIMELINE */
+    #career {}
+
+    .timeline {
+      position: relative;
+      padding-left: 24px;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 8px;
+      bottom: 8px;
+      width: 1px;
+      background: var(--gray-100);
+    }
+
+    .timeline-company-block {
+      position: relative;
+      padding-bottom: 48px;
+    }
+
+    .timeline-company-block:last-child { padding-bottom: 0; }
+
+    .timeline-company-block::before {
+      content: '';
+      position: absolute;
+      left: -28px;
+      top: 8px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--gray-300);
+      border: 2px solid var(--white);
+      outline: 1px solid var(--gray-300);
+    }
+
+    .timeline-company-block.current::before {
+      background: var(--blue);
+      outline-color: var(--blue);
+    }
+
+    .company-header { margin-bottom: 16px; }
+
+    .company-period {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--gray-500);
+      margin-bottom: 3px;
+      letter-spacing: 0.2px;
+    }
+
+    .company-name {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--black);
+      letter-spacing: -0.5px;
+    }
+
+    .company-role {
+      font-size: 13px;
+      color: var(--gray-500);
+      font-weight: 400;
+      margin-top: 2px;
+    }
+
+    .project-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .project-item {
+      background: var(--gray-50);
+      border-radius: var(--radius-sm);
+      padding: 16px 18px;
+      border-left: 3px solid var(--gray-100);
+    }
+
+    .project-item.highlight {
+      border-left-color: var(--blue);
+      background: var(--blue-light);
+    }
+
+    .project-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--black);
+      letter-spacing: -0.2px;
+      margin-bottom: 4px;
+    }
+
+    .project-item.highlight .project-name { color: var(--blue); }
+
+    .project-desc {
+      font-size: 13px;
+      color: var(--gray-700);
+      line-height: 1.65;
+      word-break: keep-all;
+    }
+
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-top: 10px;
+    }
+
+    .tag {
+      background: var(--white);
+      color: var(--gray-700);
+      font-size: 11px;
+      font-weight: 500;
+      padding: 3px 9px;
+      border-radius: 100px;
+      border: 1px solid var(--gray-100);
+    }
+
+    .tag.blue {
+      background: var(--blue-light);
+      color: var(--blue);
+      border-color: transparent;
+    }
+
+    /* WHY→과정→KPI 스텝 */
+    .process-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      margin: 12px 0 10px;
+    }
+
+    .process-step {
+      display: grid;
+      grid-template-columns: 64px 1fr;
+      gap: 0 12px;
+      position: relative;
+    }
+
+    .process-step:not(:last-child) .step-line {
+      position: absolute;
+      left: 22px;
+      top: 22px;
+      bottom: -2px;
+      width: 1px;
+      background: var(--gray-100);
+    }
+
+    .step-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 22px;
+      border-radius: 100px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .step-badge.why {
+      background: #fff3e0;
+      color: #e07b00;
+    }
+
+    .step-badge.how {
+      background: var(--gray-50);
+      color: var(--gray-700);
+      border: 1px solid var(--gray-100);
+    }
+
+    .step-badge.kpi {
+      background: #e6f7f0;
+      color: #1a9e6a;
+    }
+
+    .step-content {
+      font-size: 13px;
+      color: var(--gray-700);
+      line-height: 1.65;
+      word-break: keep-all;
+      padding: 2px 0 14px;
+    }
+
+    .step-content strong {
+      color: var(--black);
+      font-weight: 600;
+    }
+
+    .kpi-highlight {
+      display: inline-block;
+      background: #e6f7f0;
+      color: #1a9e6a;
+      font-weight: 700;
+      font-size: 12px;
+      padding: 1px 8px;
+      border-radius: 100px;
+      margin-right: 4px;
+    }
+
+    /* CONTACT / FOOTER */
+    #contact {
+      padding: 80px 0;
+      border-top: 1px solid var(--gray-100);
+    }
+
+    .contact-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .contact-text {
+      font-size: 14px;
+      color: var(--gray-500);
+    }
+
+    .contact-links {
+      display: flex;
+      gap: 12px;
+    }
+
+    .contact-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--gray-50);
+      color: var(--gray-700);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: 100px;
+      text-decoration: none;
+      border: 1px solid var(--gray-100);
+      transition: all 0.15s;
+    }
+
+    .contact-link:hover {
+      background: var(--black);
+      color: var(--white);
+      border-color: var(--black);
+    }
+
+    /* FADE IN */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* MOBILE */
+    @media (max-width: 600px) {
+      nav { padding: 0 20px; }
+      .nav-links { gap: 16px; }
+      .philosophy-grid { grid-template-columns: 1fr; }
+      .philo-card.wide { grid-column: span 1; }
+      .hero-stats { gap: 24px; flex-wrap: wrap; }
+      section { padding: 72px 0; }
+      #hero { padding: 120px 0 72px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .fade-up { opacity: 1; transform: none; transition: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <span class="nav-logo">기양</span>
+    <ul class="nav-links">
+      <li><a href="#philosophy">기획 철학</a></li>
+      <li><a href="#career">경력</a></li>
+      <li><a href="#contact">연락</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="container">
+      <div class="hero-eyebrow">Product Planner · 4년차</div>
+      <h1>금융 서비스를<br><em>사용자 언어로</em><br>번역합니다</h1>
+      <p class="hero-desc">
+        NH올원뱅크, NH모바일신분증, 삼성카드에서 금융 UX를 설계했습니다.<br>
+        API 구조와 UML을 직접 분석하고, WHY부터 시작해<br>
+        근거 있는 방향을 문서로 남기는 기획자입니다.
+      </p>
+      <div class="hero-stats">
+        <div class="stat-item">
+          <div class="stat-number">4년</div>
+          <div class="stat-label">서비스 기획 경력</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">3개</div>
+          <div class="stat-label">금융사 도메인</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">WHY</div>
+          <div class="stat-label">기획의 시작점</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PHILOSOPHY -->
+  <section id="philosophy">
+    <div class="container">
+      <p class="section-label fade-up">기획 철학</p>
+      <div class="philosophy-grid">
+        <div class="philo-card fade-up wide">
+          <span class="philo-icon">💡</span>
+          <div class="philo-title">WHY → WHAT → HOW</div>
+          <div class="philo-body">
+            기능 정의보다 문제 정의를 먼저 합니다. 비즈니스 요건이 들어오면
+            "이걸 왜 만들어야 하는가"를 먼저 묻고, 사용자 맥락으로 재해석한 뒤
+            방향의 근거를 문서로 남깁니다. 직관이 아닌 데이터와 근거가
+            팀 전체의 판단 기준이 되어야 한다고 믿습니다.
+          </div>
+          <span class="philo-tag">핵심 원칙</span>
+        </div>
+        <div class="philo-card fade-up">
+          <span class="philo-icon">🔍</span>
+          <div class="philo-title">기술 언어를 읽는 기획자</div>
+          <div class="philo-body">
+            API 명세와 UML 시퀀스를 직접 분석합니다. 개발자와 같은 언어로 논의할 수 있어야
+            기획 단계에서 구현 리스크를 잡고 재작업을 줄일 수 있다고 생각합니다.
+            NH모바일신분증 구축 당시 인증 플로우의 예외 케이스를 명세 분석으로
+            사전에 발견해 일정 지연을 막은 경험이 이 믿음을 만들었습니다.
+          </div>
+        </div>
+        <div class="philo-card fade-up">
+          <span class="philo-icon">📐</span>
+          <div class="philo-title">기준을 선제적으로 정의하는 일</div>
+          <div class="philo-body">
+            UX 문구 가이드, 에러 메시지 원칙, GA 이벤트 네이밍 규칙까지
+            팀이 매번 판단하지 않아도 되도록 구조를 먼저 설계합니다.
+            좋은 기획은 기능을 만드는 것뿐 아니라
+            팀이 더 빠르게 움직일 수 있는 판단 기준을 만드는 일이기도 합니다.
+          </div>
+        </div>
+        <div class="philo-card fade-up">
+          <span class="philo-icon">🤝</span>
+          <div class="philo-title">소통 비용을 설계하는 협업</div>
+          <div class="philo-body">
+            기획서는 내 생각을 정리하는 문서가 아니라
+            개발·디자인·QA가 같은 그림을 보는 커뮤니케이션 도구입니다.
+            플로우차트, 예외 조건 정의, 화면 상태 케이스 분기를 꼼꼼히 담아
+            "다시 물어볼 필요가 없는" 문서를 만드는 것을 목표로 합니다.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CAREER -->
+  <section id="career">
+    <div class="container">
+      <p class="section-label fade-up">경력</p>
+      <div class="timeline">
+
+        <!-- 셉템 -->
+        <div class="timeline-company-block current fade-up">
+          <div class="company-header">
+            <div class="company-period">2025.06 — 현재</div>
+            <div class="company-name">셉템</div>
+            <div class="company-role">서비스 기획 / PO</div>
+          </div>
+          <div class="project-list">
+
+            <!-- 올원뱅크 고도화 -->
+            <div class="project-item highlight">
+              <div class="project-name">NH올원뱅크 앱 고도화</div>
+              <div class="process-steps">
+                <div class="process-step">
+                  <div class="step-line"></div>
+                  <span class="step-badge why">WHY</span>
+                  <div class="step-content">
+                    앱 내 구형 OAB 디자인 화면들로 인해 <strong>이용자 수 감소</strong> 및 대표앱 이미지 구축 어려움 식별.
+                    주이용자가 중년층에 집중돼 젊은층 확대와 중년층 편의성 개선을 동시에 풀어야 하는 과제였음.
+                  </div>
+                </div>
+                <div class="process-step">
+                  <div class="step-line"></div>
+                  <span class="step-badge how">과정</span>
+                  <div class="step-content">
+                    경쟁 금융앱 부가서비스 구조 직접 비교 분석 → 개선 포인트 도출.
+                    <strong>청년미래적금 정책 발표</strong>에 맞춰 기존 청년도약계좌 이용자가 자연스럽게 갈아탈 수 있도록
+                    연결 프로세스·유도 화면·가입 흐름 전 구간 재설계.
+                    위젯 서비스 개선으로 포인트쌓기 페이지 직접 연동, 잔액조회 기능 개선 및 포인트·혜택 페이지 개선 병행.
+                  </div>
+                </div>
+                <div class="process-step">
+                  <span class="step-badge kpi">결과</span>
+                  <div class="step-content">
+                    <span class="kpi-highlight">이용자 수 증가</span> NH올원뱅크 농협 고객 내 이용자 수 증가 및 대표 금융앱 인지도 상승 기여.
+                    중년층 금융·비금융 서비스 이용 편의성 개선, 다양한 진입점 확대로 사용자 접근성 확대.
+                  </div>
+                </div>
+              </div>
+              <div class="project-tags">
+                <span class="tag blue">금융 UX</span>
+                <span class="tag">청년도약계좌</span>
+                <span class="tag">위젯 개선</span>
+                <span class="tag">혜택 페이지</span>
+                <span class="tag">운영 고도화</span>
+              </div>
+            </div>
+
+            <!-- 모바일신분증 구축 -->
+            <div class="project-item">
+              <div class="project-name">NH모바일신분증 구축 · 론칭</div>
+              <div class="process-steps">
+                <div class="process-step">
+                  <div class="step-line"></div>
+                  <span class="step-badge why">WHY</span>
+                  <div class="step-content">
+                    출시 후 타 금융앱 대비 발급률이 <strong>한 자릿수 증가 수준</strong>에 그침.
+                    발급량이 낮으면 신분증 기반 금융 서비스 이용률 전반에 직결되는 구조로 사업 목표 달성에 위협 요소로 판단.
+                  </div>
+                </div>
+                <div class="process-step">
+                  <div class="step-line"></div>
+                  <span class="step-badge how">과정</span>
+                  <div class="step-content">
+                    경쟁 금융앱 발급 프로세스를 단계별로 직접 따라가며 비교 분석 →
+                    <strong>불필요한 API 호출이 발급 속도 지연의 기술적 원인</strong>임을 기획자 단계에서 직접 확인.
+                    인증 방식 전면 교체 vs 단계 간소화 두 방향 검토 후, 개발 일정·리소스를 고려해 단계 간소화 우선 선택.
+                    전 기종 호환 통합 인증 구조 설계, OS별 예외 케이스 UML 기반 사전 정리.
+                  </div>
+                </div>
+                <div class="process-step">
+                  <span class="step-badge kpi">결과</span>
+                  <div class="step-content">
+                    <span class="kpi-highlight">발급률 한 자릿수 → 두 자릿수</span> 개선 후 1,000명 이상 꾸준히 발급 시도 확인.
+                    메인화면 진입 속도 <span class="kpi-highlight">최대 4~5초 → 3초</span> 단축.
+                    iOS·Android 전 기종 호환 통합 인증 프로세스 설계 완료.
+                  </div>
+                </div>
+              </div>
+              <div class="project-tags">
+                <span class="tag">신분증 인증 UX</span>
+                <span class="tag">API 구조 분석</span>
+                <span class="tag">전 기종 호환</span>
+                <span class="tag">발급 프로세스 개선</span>
+                <span class="tag">UML 설계</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- 바이널씨 -->
+        <div class="timeline-company-block fade-up">
+          <div class="company-header">
+            <div class="company-period">2023.03 — 2025.06</div>
+            <div class="company-name">바이널씨</div>
+            <div class="company-role">서비스 기획</div>
+          </div>
+          <div class="project-list">
+
+            <!-- 삼성카드 -->
+            <div class="project-item">
+              <div class="project-name">삼성카드 앱 고도화 운영</div>
+              <div class="process-steps">
+                <div class="process-step">
+                  <div class="step-line"></div>
+                  <span class="step-badge why">WHY</span>
+                  <div class="step-content">
+                    신규 카드 발급 고객의 초기 이용률이 낮으면 장기 이탈로 이어지는 금융 서비스 특성상,
+                    웰컴 혜택이 단순 안내 중심이어서 <strong>실제 카드 사용 유인이 부족</strong>하다는 문제 분석.
+                    VIP 고객 혜택도 한눈에 파악되지 않아 장기 고객 이용성 저하 우려 식별.
+                  </div>
+                </div>
+                <div class="process-step">
+                  <div class="step-line"></div>
+                  <span class="step-badge how">과정</span>
+                  <div class="step-content">
+                    경쟁사 웰컴·VIP 혜택 구조 분석 → <strong>오퍼월 미션형 이벤트</strong> 도입 결정.
+                    매달 30만 명 이상 신규 고객 규모를 고려해 내부 CMS 이벤트 관리 구조를 그룹화해 운영 효율화 병행.
+                    관계사 임직원 복지 혜택 서비스 신규 설계 시 초기 기준·가이드라인 선제 제시로 디자인·개발 혼선 차단.
+                  </div>
+                </div>
+                <div class="process-step">
+                  <span class="step-badge kpi">결과</span>
+                  <div class="step-content">
+                    <span class="kpi-highlight">월 30만+ 고객</span> 대상 웰컴 서비스 접근율 개선 및 초기 이용 활성화 확인.
+                    VIP 혜택 서비스 이용성 증가, 관계사 임직원 복지 서비스 제한 일정 내 안정적 출시.
+                  </div>
+                </div>
+              </div>
+              <div class="project-tags">
+                <span class="tag">웰컴혜택 설계</span>
+                <span class="tag">오퍼월 미션</span>
+                <span class="tag">CMS 운영 구조화</span>
+                <span class="tag">임직원 복지 신규</span>
+                <span class="tag">VIP 혜택</span>
+              </div>
+            </div>
+
+            <!-- 롯데홈쇼핑 -->
+            <div class="project-item">
+              <div class="project-name">롯데홈쇼핑 앱 고도화</div>
+              <div class="process-steps">
+                <div class="process-step">
+                  <div class="step-line"></div>
+                  <span class="step-badge why">WHY</span>
+                  <div class="step-content">
+                    앱 내 상품 콘텐츠 노출 구조가 비효율적으로 주요 상품 정보를 한눈에 파악하기 어려운 UX 문제 식별.
+                    <strong>데이터 기반 개선 환경 자체가 부재</strong>해 사용자 행동 데이터 수집 구조 구축이 선행 과제로 도출.
+                  </div>
+                </div>
+                <div class="process-step">
+                  <div class="step-line"></div>
+                  <span class="step-badge how">과정</span>
+                  <div class="step-content">
+                    경쟁 서비스 벤치마킹·사용자 편의성 분석으로 상품 모듈 구조 재정의.
+                    UX 개선과 동시에 <strong>GA 이벤트 트래킹 체계를 기획 단계에서 함께 설계</strong>해
+                    메뉴별 클릭률·상품 진입 경로 등 측정 가능한 구조 구축.
+                  </div>
+                </div>
+                <div class="process-step">
+                  <span class="step-badge kpi">결과</span>
+                  <div class="step-content">
+                    <span class="kpi-highlight">GA 수집 환경 구축</span> 상품 모듈 구조 개선 완료 및 마케팅·운영 조직과의 데이터 협업 기반 마련.
+                  </div>
+                </div>
+              </div>
+              <div class="project-tags">
+                <span class="tag">GA 이벤트 설계</span>
+                <span class="tag">상품 모듈 UX</span>
+                <span class="tag">데이터 수집 구조</span>
+                <span class="tag">커머스</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="container">
+      <div class="contact-inner">
+        <div class="contact-text">금융 서비스의 맥락을 아는 기획자를 찾고 계신다면</div>
+        <div class="contact-links">
+          <a href="mailto:your@email.com" class="contact-link">✉️ 이메일</a>
+          <a href="#" class="contact-link">📄 이력서</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // Fade-up on scroll
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>
